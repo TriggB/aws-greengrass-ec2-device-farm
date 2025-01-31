@@ -10,7 +10,7 @@ import { NagSuppressions } from 'cdk-nag'
 export class GreengrassEC2DeviceFarmStack extends cdk.Stack {
 
   linuxSecurityGroup: ec2.SecurityGroup;
-  windowsSecurityGroup: ec2.SecurityGroup;
+  //windowsSecurityGroup: ec2.SecurityGroup;
   vpc: cdk.aws_ec2.IVpc;
   instanceRole: iam.Role;
   greengrassRole: iam.Role;
@@ -25,7 +25,7 @@ export class GreengrassEC2DeviceFarmStack extends cdk.Stack {
     this.keyPair = this.createKeyPair();
 
     this.linuxSecurityGroup = this.createSecurityGroup('Linux');
-    this.windowsSecurityGroup = this.createSecurityGroup('Windows');
+    //this.windowsSecurityGroup = this.createSecurityGroup('Windows');
 
     this.greengrassRole = this.createGreengrassTokenExchangeRole();
     this.greengrassPolicy = this.createGreengrassTokenExchangePolicy();
@@ -34,24 +34,24 @@ export class GreengrassEC2DeviceFarmStack extends cdk.Stack {
     // All instances use the same EC2 role. It grants permissions for the Greengrass installer.
     this.instanceRole = this.createInstanceRole();
 
-    const ami_windows_server_2022 = ec2.MachineImage.latestWindows(ec2.WindowsVersion.WINDOWS_SERVER_2022_ENGLISH_CORE_BASE);
-    const ami_windows_server_2019 = ec2.MachineImage.latestWindows(ec2.WindowsVersion.WINDOWS_SERVER_2019_ENGLISH_CORE_BASE);
+    //const ami_windows_server_2022 = ec2.MachineImage.latestWindows(ec2.WindowsVersion.WINDOWS_SERVER_2022_ENGLISH_CORE_BASE);
+    //const ami_windows_server_2019 = ec2.MachineImage.latestWindows(ec2.WindowsVersion.WINDOWS_SERVER_2019_ENGLISH_CORE_BASE);
     const ami_al2023_x86_64 = this.getAmazonLinuxAmi(ec2.AmazonLinuxCpuType.X86_64);
     const ami_al2023_arm_64 = this.getAmazonLinuxAmi(ec2.AmazonLinuxCpuType.ARM_64);
     const ami_ubuntu_2204_x86_64 = this.getUbuntuAmi('22.04', 'amd64');
     const ami_ubuntu_2204_arm_64 = this.getUbuntuAmi('22.04', 'arm64');
-    const ami_ubuntu_2004_x86_64 = this.getUbuntuAmi('20.04', 'amd64');
-    const ami_ubuntu_2004_arm_64 = this.getUbuntuAmi('20.04', 'arm64');
+    //const ami_ubuntu_2004_x86_64 = this.getUbuntuAmi('20.04', 'amd64');
+    //const ami_ubuntu_2004_arm_64 = this.getUbuntuAmi('20.04', 'arm64');
 
     // Windows first because it's slowest to come up
-    this.createInstance('windows-server-2022', ami_windows_server_2022);
-    this.createInstance('windows-server-2019', ami_windows_server_2019);
+    //this.createInstance('windows-server-2022', ami_windows_server_2022);
+    //this.createInstance('windows-server-2019', ami_windows_server_2019);
     this.createInstance('al2023-x86-64', ami_al2023_x86_64);
     this.createInstance('al2023-arm-64', ami_al2023_arm_64);
     this.createInstance('ubuntu-22-04-x86-64', ami_ubuntu_2204_x86_64);
     this.createInstance('ubuntu-22-04-arm-64', ami_ubuntu_2204_arm_64);
-    this.createInstance('ubuntu-20-04-x86-64', ami_ubuntu_2004_x86_64);
-    this.createInstance('ubuntu-20-04-arm-64', ami_ubuntu_2004_arm_64);
+    //this.createInstance('ubuntu-20-04-x86-64', ami_ubuntu_2004_x86_64);
+    //this.createInstance('ubuntu-20-04-arm-64', ami_ubuntu_2004_arm_64);
 
     new cdk.CfnOutput(this, 'Key Pair Name', { value: this.keyPair.keyPairName });
     new cdk.CfnOutput(this, 'Download Key Command', {
